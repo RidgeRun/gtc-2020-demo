@@ -63,9 +63,6 @@ pipelines_video_enc.append(h264)
 h265 = PipelineEntity(client, 'h265', 'interpipesrc name=h265_src format=time listen-to=deep ! nvvideoconvert ! nvv4l2h265enc ! interpipesink name=h265_sink forward-events=true forward-eos=true sync=false async=false enable-last-sample=false drop=true')
 pipelines_video_enc.append(h265)
 
-vp9 = PipelineEntity(client, 'vp9', 'interpipesrc name=vp9_src format=time listen-to=deep ! nvvideoconvert ! nvv4l2vp9enc ! interpipesink name=vp9_sink forward-events=true forward-eos=true sync=false async=false enable-last-sample=false drop=true')
-pipelines_video_enc.append(vp9)
-
 jpeg = PipelineEntity(client, 'jpeg', 'interpipesrc name=jpeg_src format=time listen-to=deep ! nvvideoconvert ! video/x-raw,format=I420,width=1280,height=720 ! nvjpegenc ! interpipesink name=jpeg forward-events=true forward-eos=true sync=false async=false enable-last-sample=false drop=true')
 pipelines_snap.append(jpeg)
 
@@ -75,9 +72,6 @@ pipelines_video_rec.append(record_h264)
 
 record_h265 = PipelineEntity(client, 'record_h265', 'interpipesrc format=time listen-to=h265_sink ! h265parse ! matroskamux ! filesink name=filesink_record_h265 location=test-h265.mkv')
 pipelines_video_rec.append(record_h265)
-
-record_vp9 = PipelineEntity(client, 'record_vp9', 'interpipesrc format=time listen-to=vp9_sink ! matroskamux ! filesink name=filesink_record_vp9 location=test-vp9.mkv')
-pipelines_video_rec.append(record_vp9)
 
 # Create snapshot pipeline
 snapshot = PipelineEntity(client, 'snapshot', 'interpipesrc format=time listen-to=jpeg num-buffers=1 ! filesink name=filesink_snapshot location=test-snapshot.jpg')
